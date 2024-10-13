@@ -1,1 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      
+    }
 
+    /* Estilo para el logo de fondo */
+    .background-logo {
+      background-image: url('https://github.com/Mark2024Eze/Proyecto-para-ingles/blob/main/instituto%20overcome.jpg?raw=true'); /* URL del logo */
+      background-size: 25%; /* Ajusta el tamaño de la imagen de fondo */
+      background-repeat: no-repeat; /* Evita que se repita la imagen */
+      background-position: center 300px; /* Centra la imagen */
+      opacity: 0.1; /* Ajusta la opacidad para que sea tenue */
+      position: absolute; /* Posiciona el logo de fondo */
+      top: 0; /* Alinea al principio */
+      left: 0; /* Alinea al inicio */
+      right: 0; /* Alinea al final */
+      bottom: 0; /* Alinea al final */
+      z-index: -1; /* Coloca detrás de otros elementos */
+    }
+
+   /* Ajustes para pantallas más pequeñas, como móviles */
+   @media (max-width: 400px) {
+  .background-logo {
+    background-size: 210px auto; /* Redimensiona el logo para móviles */
+    background-position: center 500px; /* Baja la imagen 150px en móviles */
+  }
+    }
+
+    /* Ajustes para pantallas medianas, como tablets */
+    @media (min-width: 769px) and (max-width: 1200px) {
+     .background-logo {
+     background-size: 500px auto; /* Tamaño intermedio del logo */
+     background-position: center 200px; /* Ajusta la posición del logo */
+    }
+   }
+
+    /* Ajustes para pantallas grandes, como PC */
+    @media (min-width: 1201px) {
+    .background-logo {
+     background-size: 25%; /* Tamaño más grande del logo en PC */
+     background-position: center 300px; /* Ajusta la posición del logo */
+    }
+   }
+    h1, h2 {
+      text-align: center;
+      color: #0066cc;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .animal, .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .animal {
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #e0f7fa;
+      padding: 5px;
+      border-radius: 5px;
+      text-align: center;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .animal-button, .image-button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .animal-button:hover, .image-button:hover {
+      background-color: #004d40;
+    }
+
+    .selected {
+      background-color: #b2ebf2;
+      border: 2px solid #00796b;
+    }
+
+    .incorrect {
+      background-color: #ffcdd2;
+      border: 2px solid #d32f2f;
+    }
+
+    .correct {
+      background-color: #c8e6c9;
+      border: 2px solid #388e3c;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    @media (max-width: 600px) {
+      .animal, .image-container {
+        margin: 10px 0;
+      }
+
+      .animal {
+        width: 80px;
+        height: 80px;
+      }
+
+      .image {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .progress-container, .error-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+
+    .progress-bar, .error-bar {
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .progress-bar {
+      background-color: #76c7c0;
+    }
+
+    .error-bar {
+      background-color: #f44336;
+    }
+
+    .reset-button, .check-button {
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      margin: 20px auto;
+      padding: 10px;
+      text-align: center;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .reset-button:hover, .check-button:hover {
+      background-color: #004d40;
+    }
+  </style>
+  <title>Match the Weather</title>
+</head>
+<body>
+  <div class="background-logo"></div> <!-- Logo de fondo -->
+  <div style="display: flex; align-items: center;">
+    <img src="https://github.com/Mark2024Eze/Proyecto-para-ingles/blob/main/instituto%20overcome.jpg?raw=true" alt="Instituto Overcome" style="max-width: 100px; margin-right: 20px;">
+    <h1>Match the Weather with the Images</h1>
+  </div>
+  <div class="progress-container">
+    <div id="progressBar" class="progress-bar">0%</div>
+  </div>
+  <div class="progress-container">
+    <div id="correctBar" class="progress-bar">Correct: 0</div>
+  </div>
+  <div class="error-container">
+    <div id="errorBar" class="error-bar">Errors: 0</div>
+  </div>
+
+  <div class="container">
+    <div class="column" id="animals">
+      
+      <div class="animal" data-animal="Spring">
+        Spring
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-MsslTD_ppagsr.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Summer">
+        Summer
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-OOYpSO_t7gc3l.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Autumn">
+        Autumn
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-EMjUAk_gsmaon.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Winter">
+        Winter
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-E8FBgZ_sbtkb9.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Sunny">
+        Sunny
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-lZ8KlI_tonvss.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Rainy">
+        Rainy
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-MKWGsx_ygsusl.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Cloudy">
+        Cloudy
+        <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-i5hYeK_zaoacd.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Windy">
+        Windy
+         <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-XvXXRn_vihkx5.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Stormy">
+        Stormy
+         <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-J2SzgN_wnl2yj.mp3">🔊</button>
+      </div>
+      <div class="animal" data-animal="Snowy">
+        Snowy
+         <button class="animal-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-6q6hka_wi7wus.mp3">🔊</button>
+      </div>
+      </div>
+    <canvas id="canvas"></canvas>
+    <div class="column" id="images">
+    
+      <div class="image-container" data-animal="Snowy">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/vertical-shot-blue-house-covered-with-white-snow-winter.jpg?raw=true" alt="Giraffe" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-6q6hka_wi7wus.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Stormy">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/lightning-1056419_1280.jpg?raw=true" alt="Lion" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-J2SzgN_wnl2yj.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Windy">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/pngwing.com%20(5).png?raw=true" alt="Rabbit" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-XvXXRn_vihkx5.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Cloudy">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/trees-583174_1280.jpg?raw=true" alt="Tiger" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-i5hYeK_zaoacd.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Rainy">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/black-white-image-sad-woman.jpg?raw=true" alt="Bird" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-MKWGsx_ygsusl.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Sunny">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/sun-1987414_1280.png?raw=true" alt="Cat" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-lZ8KlI_tonvss.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Winter">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/autumn-landscape-with-bench-trees.jpg?raw=true" alt="Dog" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839567/luvvoice.com-20241013-E8FBgZ_sbtkb9.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Autumn">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/autumn-6752841_1280.jpg?raw=true" alt="Elephant" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-EMjUAk_gsmaon.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Summer">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/cinematic-coconut-beach.jpg?raw=true" alt="Fish" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-OOYpSO_t7gc3l.mp3">🔊</button>
+      </div>
+      <div class="image-container" data-animal="Spring">
+        <img src="https://github.com/Mark2024Eze/Weahter_Pre_kinder/blob/main/beautiful-natural-landscape.jpg?raw=true" alt="Horse" class="image">
+        <button class="image-button" data-audio="https://res.cloudinary.com/deyhxjgsn/video/upload/v1728839566/luvvoice.com-20241013-MsslTD_ppagsr.mp3">🔊</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="check-button" onclick="checkAnswers()">Check Answers</button>
+  <button class="reset-button" onclick="resetGame()">Reset</button>
+
+  <!-- Pie de página -->
+  <footer>
+    <p>&copy; Activity Match the Weather with the images - Profesora Mariana Cuello © 2024</p>
+  </footer>
+
+  
+  <script>
+    let lines = [];
+    let correctCount = 0;
+    let errorCount = 0;
+    const animalMap = {};
+
+    const animals = document.querySelectorAll('.animal');
+    const imageContainers = document.querySelectorAll('.image-container');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    function drawLine(x1, y1, x2, y2, color) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    animals.forEach(animal => {
+      animal.addEventListener('click', function() {
+        animals.forEach(a => a.classList.remove('selected'));
+        animal.classList.add('selected');
+      });
+    });
+
+    imageContainers.forEach(imageContainer => {
+      imageContainer.addEventListener('click', function() {
+        const selectedAnimal = document.querySelector('.animal.selected');
+        if (selectedAnimal) {
+          const x1 = selectedAnimal.offsetLeft + selectedAnimal.offsetWidth;
+          const y1 = selectedAnimal.offsetTop + selectedAnimal.offsetHeight / 2;
+          const x2 = imageContainer.offsetLeft;
+          const y2 = imageContainer.offsetTop + imageContainer.offsetHeight / 2;
+
+          drawLine(x1, y1, x2, y2, '#000'); // Draw line in default color
+          animalMap[selectedAnimal.getAttribute('data-animal')] = imageContainer.getAttribute('data-animal');
+        }
+      });
+    });
+
+    function updateProgress() {
+      const total = animals.length;
+      const correctPercent = Math.round((correctCount / total) * 100);
+      const errorPercent = Math.round((errorCount / total) * 100);
+
+      document.getElementById('progressBar').style.width = correctPercent + '%';
+      document.getElementById('progressBar').textContent = correctPercent + '%';
+
+      document.getElementById('correctBar').textContent = 'Correct: ' + correctCount;
+      document.getElementById('errorBar').textContent = 'Errors: ' + errorCount;
+    }
+
+    function checkAnswers() {
+      correctCount = 0;
+      errorCount = 0;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      animals.forEach(animal => {
+        const animalName = animal.getAttribute('data-animal');
+        const selectedImage = Array.from(imageContainers).find(image => animalMap[animalName] === image.getAttribute('data-animal'));
+
+        if (selectedImage) {
+          const x1 = animal.offsetLeft + animal.offsetWidth;
+          const y1 = animal.offsetTop + animal.offsetHeight / 2;
+          const x2 = selectedImage.offsetLeft;
+          const y2 = selectedImage.offsetTop + selectedImage.offsetHeight / 2;
+
+          if (animalName === selectedImage.getAttribute('data-animal')) {
+            drawLine(x1, y1, x2, y2, 'green');
+            animal.classList.add('correct');
+            selectedImage.classList.add('correct');
+            correctCount++;
+          } else {
+            drawLine(x1, y1, x2, y2, 'red');
+            animal.classList.add('incorrect');
+            selectedImage.classList.add('incorrect');
+            errorCount++;
+          }
+        }
+      });
+
+      updateProgress();
+    }
+
+    function resetGame() {
+      lines = [];
+      correctCount = 0;
+      errorCount = 0;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      animals.forEach(animal => {
+        animal.classList.remove('correct', 'incorrect', 'selected');
+      });
+
+      imageContainers.forEach(imageContainer => {
+        imageContainer.classList.remove('correct', 'incorrect');
+      });
+
+      animalMap = {};
+      updateProgress();
+    }
+
+    function playAudio(audioSrc) {
+      const audio = new Audio(audioSrc);
+      audio.play();
+    }
+
+    document.querySelectorAll('.animal-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const audioSrc = this.getAttribute('data-audio');
+        playAudio(audioSrc);
+      });
+    });
+
+    document.querySelectorAll('.image-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const audioSrc = this.getAttribute('data-audio');
+        playAudio(audioSrc);
+      });
+    });
+
+    <!-- JavaScript para reproducir audio sin seleccionar imágenes o palabras -->
+     
+  document.querySelectorAll('.animal-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      event.stopPropagation(); // Evita que el clic en el botón de audio seleccione la imagen o palabra
+      const audioSrc = this.getAttribute('data-audio');
+      const audio = new Audio(audioSrc);
+      audio.play();
+    });
+  });
+
+  </script>
+</body>
+</html>
